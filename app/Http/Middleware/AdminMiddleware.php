@@ -18,6 +18,7 @@ class AdminMiddleware
     {
          // Check if the user is authenticated and is an admin
         if (Auth::check() && !Auth::user()->is_admin) {
+            dd(Auth::user());
             abort(403);
         }
 
