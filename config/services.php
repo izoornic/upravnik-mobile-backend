@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'legacy_api' => [
+        'url' => env('LEGACY_API_URL', 'http://localhost/legacy-api'),
+        'key' => env('LEGACY_API_KEY', ''),
+    ],
+
 ];

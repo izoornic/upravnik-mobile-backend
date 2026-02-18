@@ -24,6 +24,10 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('is_admin')
                     ->searchable(),
+                TextColumn::make('legacy_upravnik_id')
+                    ->label('Upravnik ID')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),

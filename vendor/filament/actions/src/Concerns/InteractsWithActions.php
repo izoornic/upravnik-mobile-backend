@@ -170,6 +170,10 @@ trait InteractsWithActions
             $this->unmountAction(canCancelParentActions: false);
 
             return null;
+        } catch (ValidationException $exception) {
+            $this->unmountAction(canCancelParentActions: false);
+
+            throw $exception;
         }
 
         if (! $this->mountedActionShouldOpenModal(mountedAction: $action)) {
@@ -502,6 +506,10 @@ trait InteractsWithActions
                 continue;
             }
 
+            if (filled($action['arguments'] ?? [])) {
+                $resolvedAction->mergeArguments($action['arguments']);
+            }
+
             $resolvedAction->nestingIndex($actionNestingIndex);
             $resolvedAction->boot();
 
@@ -627,7 +635,7 @@ trait InteractsWithActions
     }
 
     /**
-     * @param  string | array<string>  $actions
+     * @param  string | array<string | array<string, mixed>>  $actions
      */
     public function getAction(string | array $actions, bool $isMounting = true): ?Action
     {
@@ -747,7 +755,12 @@ trait InteractsWithActions
 
     protected function syncActionModals(): void
     {
-        $this->dispatch('sync-action-modals', id: $this->getId(), newActionNestingIndex: array_key_last($this->mountedActions));
+        $this->dispatch(
+            'sync-action-modals',
+            id: $this->getId(),
+            newActionNestingIndex: array_key_last($this->mountedActions),
+            shouldOverlayParentActions: $this->getMountedAction()?->shouldOverlayParentActions() ?? false,
+        );
     }
 
     public function getOriginallyMountedActionIndex(): ?int
