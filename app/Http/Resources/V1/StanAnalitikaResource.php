@@ -10,14 +10,26 @@ class StanAnalitikaResource extends JsonResource
     public function toArray(Request $request): array
     {
         $stariDug = $this->stari_dug;
+        $meseci   = $this->meseci ?? [];
+
+        $mesecSum = fn (string $field) => collect($meseci)->sum(fn (array $m) => (float) $m[$field]);
+
+        $ukupnoZaduzeno  = $mesecSum('zaduzeno')  + ($stariDug ? (float) $stariDug['zaduzeno']  : 0);
+        $ukupnoRazduzeno = $mesecSum('razduzeno') + ($stariDug ? (float) $stariDug['razduzeno'] : 0);
+        $ukupnoSaldo     = $mesecSum('saldo')     + ($stariDug ? (float) $stariDug['saldo']     : 0);
 
         return [
+            'ukupno' => [
+                'zaduzeno'  => $ukupnoZaduzeno,
+                'razduzeno' => $ukupnoRazduzeno,
+                'saldo'     => $ukupnoSaldo,
+            ],
             'stari_dug' => $stariDug ? [
                 'zaduzeno'  => $stariDug['zaduzeno'],
                 'razduzeno' => $stariDug['razduzeno'],
                 'saldo'     => $stariDug['saldo'],
             ] : null,
-            'meseci' => collect($this->meseci ?? [])->map(fn (array $m) => [
+            'meseci' => collect($meseci)->map(fn (array $m) => [
                 'mid'          => $m['mid'],
                 'datum'        => $m['datum'],
                 'year'         => $m['y_no'],
