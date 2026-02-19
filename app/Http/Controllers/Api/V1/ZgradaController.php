@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\ZgradaDetailResource;
 use App\Http\Resources\V1\ZgradaResource;
 use App\Services\LegacyApiService;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class ZgradaController extends Controller
         return ZgradaResource::collection($zgrade);
     }
 
-    public function show(Request $request, int $id): ZgradaResource
+    public function show(Request $request, int $id): ZgradaDetailResource
     {
         $zgradaIds = $request->user()->accessibleZgradaIds();
 
@@ -29,13 +30,8 @@ class ZgradaController extends Controller
             abort(403, 'Nemate pristup ovoj zgradi.');
         }
 
-        $zgrade = $this->legacyApi->getZgrade([$id]);
-        $zgrada = $zgrade->first();
+        $zgrada = $this->legacyApi->getZgradaDetail($id);
 
-        if (! $zgrada) {
-            abort(404);
-        }
-
-        return new ZgradaResource($zgrada);
+        return new ZgradaDetailResource($zgrada);
     }
 }

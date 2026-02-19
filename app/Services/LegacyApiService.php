@@ -27,6 +27,13 @@ class LegacyApiService
         return $this->getCollection('/zgrade', ['ids' => implode(',', $ids)]);
     }
 
+    public function getZgradaDetail(int $id): object
+    {
+        $response = $this->request('GET', '/zgrada-detail', ['zid' => $id]);
+
+        return (object) $response;
+    }
+
     public function getZgradaIdsByUpravnikId(int $uid): Collection
     {
         $response = $this->request('GET', '/zgrada-ids', ['uid' => $uid]);
