@@ -43,6 +43,11 @@ class LegacyApiService
 
     // --- Stanovi ---
 
+    public function getStanariAnalitika(int $zid): Collection
+    {
+        return $this->getCollection('/stanari-analitika', ['zid' => $zid]);
+    }
+
     public function getStanoviByZgrada(int $zid): Collection
     {
         return $this->getCollection('/stanovi', ['zid' => $zid]);
