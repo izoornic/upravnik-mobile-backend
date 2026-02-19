@@ -21,6 +21,7 @@ class ZgradaResource extends JsonResource
             'banka' => $this->banka,
             'stanje' => $this->stanje,
             'prikazuje_opomene' => (bool) $this->prikazuje_opomene,
+            'prostorije' => $this->prostorije ?? [],
         ];
     }
 }
