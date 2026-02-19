@@ -5,12 +5,14 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/tmp_old_db
 #/vendor
 .env
 .env.backup
 .env.production
 .phpactor.json
 .phpunit.result.cache
+.postman_collection.json
 Homestead.json
 Homestead.yaml
 npm-debug.log
