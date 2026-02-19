@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\DobavljacController;
 use App\Http\Controllers\Api\V1\LookupController;
 use App\Http\Controllers\Api\V1\MesecZgradaZaduzenjeController;
 use App\Http\Controllers\Api\V1\RacunKomentarController;
+use App\Http\Controllers\Api\V1\StanAnalitikaController;
 use App\Http\Controllers\Api\V1\StanariAnalitikaController;
 use App\Http\Controllers\Api\V1\StanController;
 use App\Http\Controllers\Api\V1\StanMesecZaduzenjeController;
@@ -30,6 +31,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Stanovi (units) - nested under zgrada
     Route::get('/zgrade/{zgradaId}/stanovi', [StanController::class, 'index']);
     Route::get('/zgrade/{zgradaId}/stanovi/{stanId}', [StanController::class, 'show']);
+    Route::get('/zgrade/{zgradaId}/stanovi/{stanId}/analitika', [StanAnalitikaController::class, 'index']);
 
     // Stanari analitika (per-unit financial summary)
     Route::get('/zgrade/{zgradaId}/stanari-analitika', [StanariAnalitikaController::class, 'index']);

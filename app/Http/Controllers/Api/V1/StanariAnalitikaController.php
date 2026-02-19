@@ -21,6 +21,13 @@ class StanariAnalitikaController extends Controller
 
         $analitika = $this->legacyApi->getStanariAnalitika($zgradaId);
 
-        return StanariAnalitikaResource::collection($analitika);
+        return StanariAnalitikaResource::collection($analitika)
+            ->additional([
+                'meta' => [
+                    'ukupno_zaduzeno'  => $analitika->sum(fn ($row) => (float) $row->zaduzeno),
+                    'ukupno_razduzeno' => $analitika->sum(fn ($row) => (float) $row->razduzeno),
+                    'ukupno_saldo'     => $analitika->sum(fn ($row) => (float) $row->saldo),
+                ],
+            ]);
     }
 }
