@@ -27,6 +27,8 @@ class StanResource extends JsonResource
                 'name' => trim($this->vlasnik_ime.' '.$this->vlasnik_prezime),
                 'phone' => $this->vlasnik_tel,
                 'email' => $this->vlasnik_email,
+                'racun_na_email' => $this->vlasnik_rac_na_email,
+                'racun_se_stampa' => $this->vlasnik_rac_se_stampa,
             ] : null,
             'dodatne_prostorije' => collect($this->garaze ?? [])->map(fn (array $g) => [
                 'id' => $g['gid'],
