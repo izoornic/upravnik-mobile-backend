@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\V1\MesecZgradaZaduzenjeController;
 use App\Http\Controllers\Api\V1\RacunKomentarController;
 use App\Http\Controllers\Api\V1\StanController;
 use App\Http\Controllers\Api\V1\StanMesecZaduzenjeController;
-use App\Http\Controllers\Api\V1\VlasnikController;
 use App\Http\Controllers\Api\V1\VrstaZaduzenjaController;
 use App\Http\Controllers\Api\V1\ZgradaController;
 use App\Http\Controllers\Api\V1\ZgradaRacunController;
@@ -30,9 +29,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Stanovi (units) - nested under zgrada
     Route::get('/zgrade/{zgradaId}/stanovi', [StanController::class, 'index']);
     Route::get('/zgrade/{zgradaId}/stanovi/{stanId}', [StanController::class, 'show']);
-
-    // Vlasnici (owners) - nested under zgrada
-    Route::get('/zgrade/{zgradaId}/vlasnici', [VlasnikController::class, 'index']);
 
     // Vrste zaduzenja (charge types) - nested under zgrada
     Route::get('/zgrade/{zgradaId}/vrste-zaduzenja', [VrstaZaduzenjaController::class, 'index']);

@@ -48,13 +48,6 @@ class LegacyApiService
         return (object) $response;
     }
 
-    // --- Vlasnici ---
-
-    public function getVlasniciByZgrada(int $zid): Collection
-    {
-        return $this->getCollection('/vlasnici', ['zid' => $zid]);
-    }
-
     // --- Zaduzenja ---
 
     public function getVrsteZaduzenjaByZgrada(int $zid): Collection

@@ -1,0 +1,424 @@
+{
+  "info": {
+    "name": "Upravnik Mobile Backend",
+    "description": "API collection for Upravnik Mobile Backend - https://mobile-back.skyvortex.rs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://mobile-back.skyvortex.rs",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Sanctum token - auto-set after login"
+    },
+    {
+      "key": "zgrada_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "stan_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "smz_id",
+      "value": "1",
+      "type": "string",
+      "description": "stan_mesec_zaduzenje ID for payment recording"
+    },
+    {
+      "key": "dobavljac_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token saved:', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"your@email.com\",\n  \"password\": \"your-password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            },
+            "description": "Login and get Sanctum token. Token is automatically saved to the collection variable."
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Zgrade",
+      "item": [
+        {
+          "name": "List Zgrade",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade"]
+            },
+            "description": "Returns all buildings the authenticated user has access to."
+          }
+        },
+        {
+          "name": "Get Zgrada",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stanovi",
+      "item": [
+        {
+          "name": "List Stanovi",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/stanovi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "stanovi"]
+            }
+          }
+        },
+        {
+          "name": "Get Stan",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/stanovi/{{stan_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "stanovi", "{{stan_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vlasnici",
+      "item": [
+        {
+          "name": "List Vlasnici",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/vlasnici",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "vlasnici"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vrste Zaduzenja",
+      "item": [
+        {
+          "name": "List Vrste Zaduzenja",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/vrste-zaduzenja",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "vrste-zaduzenja"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stan Zaduzenja",
+      "item": [
+        {
+          "name": "List Stan Zaduzenja",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/stan-zaduzenja",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "stan-zaduzenja"]
+            }
+          }
+        },
+        {
+          "name": "Record Payment (Uplata)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"r_date\": \"2026-02-18\",\n  \"r_iznos\": 5000.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/stan-zaduzenja/{{smz_id}}/uplata",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "stan-zaduzenja", "{{smz_id}}", "uplata"]
+            },
+            "description": "Records a payment on a unit monthly charge. Set smz_id to the stan_mesec_zaduzenje ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Zgrada Zaduzenja",
+      "item": [
+        {
+          "name": "List Zgrada Zaduzenja",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/zgrada-zaduzenja",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "zgrada-zaduzenja"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Racuni",
+      "item": [
+        {
+          "name": "List Racuni",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/racuni",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "racuni"]
+            }
+          }
+        },
+        {
+          "name": "List Racun Komentari",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/zgrade/{{zgrada_id}}/racun-komentari",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "zgrade", "{{zgrada_id}}", "racun-komentari"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lookup",
+      "item": [
+        {
+          "name": "Stan Namene",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/lookup/stan-namene",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lookup", "stan-namene"]
+            }
+          }
+        },
+        {
+          "name": "Fondovi",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/lookup/fondovi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lookup", "fondovi"]
+            }
+          }
+        },
+        {
+          "name": "Meseci",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/lookup/meseci",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lookup", "meseci"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dobavljaci",
+      "item": [
+        {
+          "name": "List Dobavljaci",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/dobavljaci",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "dobavljaci"]
+            }
+          }
+        },
+        {
+          "name": "Get Tekuci Racuni",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/dobavljaci/{{dobavljac_id}}/tekuci-racuni",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "dobavljaci", "{{dobavljac_id}}", "tekuci-racuni"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
