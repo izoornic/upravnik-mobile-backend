@@ -19,6 +19,7 @@ class StanAnalitikaResource extends JsonResource
         $ukupnoSaldo     = $mesecSum('saldo')     + ($stariDug ? (float) $stariDug['saldo']     : 0);
 
         return [
+            'stan_id' => $this->sid,
             'ukupno' => [
                 'zaduzeno'  => $ukupnoZaduzeno,
                 'razduzeno' => $ukupnoRazduzeno,

@@ -19,9 +19,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Zgrade (buildings)
     Route::get('/zgrade', [ZgradaController::class, 'index']);
 
-    // Stanovi (units) - nested under zgrada
-    Route::get('/zgrade/{zgradaId}/stanovi', [StanController::class, 'index']);
-    Route::get('/zgrade/{zgradaId}/stanovi/{stanId}', [StanController::class, 'show']);
-    Route::get('/zgrade/{zgradaId}/stanovi/{stanId}/analitika', [StanAnalitikaController::class, 'index']);
+    // Stanovi (units)
+    Route::get('/stanovi', [StanController::class, 'index']);
+    Route::get('/stanovi/analitika', [StanAnalitikaController::class, 'index']);
 
 });

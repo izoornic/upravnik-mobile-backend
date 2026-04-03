@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Api\V1\Concerns\AuthorizesZgradaAccess;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\StanAnalitikaResource;
 use App\Services\LegacyApiService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class StanAnalitikaController extends Controller
 {
-    use AuthorizesZgradaAccess;
-
     public function __construct(private LegacyApiService $legacyApi) {}
 
-    public function index(Request $request, int $zgradaId, int $stanId): StanAnalitikaResource
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $this->authorizeZgradaAccess($request, $zgradaId);
+        $zgradaIds = $request->user()->accessibleZgradaIds();
 
-        $analitika = $this->legacyApi->getStanAnalitika($zgradaId, $stanId);
+        $analitika = $zgradaIds->flatMap(fn (int $zgradaId) => $this->legacyApi->getStanoviAnalitikaByZgrada($zgradaId));
 
-        return new StanAnalitikaResource($analitika);
+        return StanAnalitikaResource::collection($analitika);
     }
 }

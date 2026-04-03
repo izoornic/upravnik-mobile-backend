@@ -48,23 +48,14 @@ class LegacyApiService
         return $this->getCollection('/stanari-analitika', ['zid' => $zid]);
     }
 
-    public function getStanAnalitika(int $zid, int $sid): object
+    public function getStanoviAnalitikaByZgrada(int $zid): Collection
     {
-        $response = $this->request('GET', '/stan-analitika', ['zid' => $zid, 'sid' => $sid]);
-
-        return (object) $response;
+        return $this->getCollection('/stanovi-analitika', ['zid' => $zid]);
     }
 
     public function getStanoviByZgrada(int $zid): Collection
     {
         return $this->getCollection('/stanovi', ['zid' => $zid]);
-    }
-
-    public function getStan(int $zid, int $sid): object
-    {
-        $response = $this->request('GET', '/stanovi', ['zid' => $zid, 'sid' => $sid]);
-
-        return (object) $response;
     }
 
     // --- Zaduzenja ---
